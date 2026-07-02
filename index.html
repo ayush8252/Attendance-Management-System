@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="nav-brand">📋 AttendanceMS</span>
+        <div class="nav-right">
+            <span class="nav-user">👤 admin</span>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    <h1>Attendance <span>Management System</span></h1>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total Students</span>
+            <span class="stat-value" id="statTotal">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Present Today</span>
+            <span class="stat-value green" id="statPresent">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Absent Today</span>
+            <span class="stat-value red" id="statAbsent">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Low Attendance (&lt;75%)</span>
+            <span class="stat-value yellow" id="statLow">0</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="control-row">
+            <input type="text" id="studentName" placeholder="Enter student name">
+            <input type="date" id="date">
+            <button onclick="addStudent()">+ Add Student</button>
+        </div>
+        <div class="control-row">
+            <input type="text" id="search"
+                placeholder="🔍 Search student..."
+                oninput="renderStudents()">
+            <div class="filter-group" id="filterGroup">
+                <button class="filter-btn active" data-filter="all"     onclick="setFilter('all')">All</button>
+                <button class="filter-btn"         data-filter="present" onclick="setFilter('present')">Present</button>
+                <button class="filter-btn"         data-filter="absent"  onclick="setFilter('absent')">Absent</button>
+            </div>
+            <button id="sortBtn" onclick="toggleSort()">Sort A–Z</button>
+        </div>
+        <div class="control-row">
+            <button onclick="markAllPresent()">✅ Mark All Present</button>
+            <button onclick="markAllAbsent()">❌ Mark All Absent</button>
+            <button onclick="resetAttendance()" class="secondary">🔄 Reset Today</button>
+            <button onclick="downloadCSV()"     class="secondary">⬇ Export CSV</button>
+            <button onclick="printAttendance()" class="secondary">🖨 Print</button>
+            <button onclick="clearAll()"        class="danger">🗑 Clear All</button>
+        </div>
+    </div>
+    <div class="table-wrapper">
+        <table id="mainTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Today's Status</th>
+                    <th>Attendance %</th>
+                    <th>Present Days</th>
+                    <th>Absent Days</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentList"></tbody>
+        </table>
+    </div>
+    <div class="section-header">
+        <h2>📅 Attendance History</h2>
+        <input type="date" id="historyDate" onchange="renderHistory()">
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr><th>Student</th><th>Status on Selected Date</th></tr>
+            </thead>
+            <tbody id="historyList"></tbody>
+        </table>
+    </div>
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Overall Distribution</h3>
+            <canvas id="attendanceChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>Last 7 Days Trend</h3>
+            <canvas id="weeklyChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
